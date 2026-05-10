@@ -1,38 +1,39 @@
+/* CON iOS - Global Styles */
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    user-select: none; /* Prevents text highlighting while dragging */
+    user-select: none;
+    background-color: #000; /* Backdrop for the wallpaper */
 }
 
 .desktop-wrapper {
-    /* FIX: Correct background setup for non-zoomed, contained wallpaper */
-    background: url('https://images3.alphacoders.com/789/789408.png');
-    background-size: contain; /* The requested 'original size thingy' fix */
+    /* Updated Wallpaper */
+    background-image: url('https://images3.alphacoders.com/789/789408.png');
+    background-size: contain; 
     background-repeat: no-repeat;
     background-position: center;
-    background-color: #0d1117; /* Matches the dark void of the image */
     
     height: 100vh;
     width: 100vw;
     position: relative;
-    overflow: hidden; /* Important: windows cannot escape the desktop */
+    overflow: hidden;
 }
 
-/* Icons Grid */
+/* Icons Grid Layout */
 .app-grid-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: calc(100% - 40px); /* Fill space above taskbar */
-    pointer-events: none; /* Let clicks pass through empty grid space */
+    height: calc(100% - 40px);
+    pointer-events: none;
 }
 
 .app-grid {
-    pointer-events: auto; /* Re-enable clicks for actual icons */
+    pointer-events: auto;
     display: grid;
     grid-template-columns: repeat(auto-fill, 80px);
     grid-template-rows: repeat(auto-fill, 90px);
@@ -74,21 +75,21 @@ body, html {
     text-overflow: ellipsis;
 }
 
-/* Taskbar Style */
+/* Taskbar Styles */
 .taskbar {
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 40px;
-    background: rgba(25, 25, 30, 0.5);
-    backdrop-filter: blur(15px);
+    background: rgba(25, 25, 30, 0.6);
+    backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 0 15px;
     box-sizing: border-box;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    z-index: 1000; /* Taskbar is always on top */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
 }
 
 .system-tray {
@@ -98,63 +99,62 @@ body, html {
     gap: 15px;
 }
 
-/* !!! Dynamic Windows & Transitions !!! */
-
+/* Window Physics & Animations */
 .window {
     position: absolute;
-    background: rgba(30, 32, 40, 0.95);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    background: rgba(28, 28, 32, 0.98);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     
-    /* Smooth Transitions for opening/minimizing/moving */
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+    /* Smooth Transitions */
+    transition: transform 0.3s cubic-bezier(0.2, 1, 0.2, 1), 
                 opacity 0.2s ease, 
-                width 0.2s ease, 
-                height 0.2s ease;
+                width 0.3s ease, 
+                height 0.3s ease;
     
     transform: scale(1);
     opacity: 1;
 }
 
-/* Minimize/Open states for smooth scaling */
-.window.opening { transform: scale(0.5); opacity: 0; }
+.window.opening { transform: scale(0.7); opacity: 0; }
 .window.closing { transform: scale(0.9); opacity: 0; }
-.window.minimized { transform: scale(0.1); opacity: 0; }
+.window.minimized { transform: translateY(100vh) scale(0.1); opacity: 0; }
 
 .window.dragging {
-    transition: none; /* Disable transitions when actively dragging */
+    transition: none;
     z-index: 999;
 }
 
-/* Window Header (The Draggable Part) */
+/* Window Header Bar */
 .window-header {
-    height: 28px;
-    background: #1a1c22;
+    height: 32px;
+    background: #252529;
     cursor: grab;
     display: flex;
     align-items: center;
-    padding: 0 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .window-header:active { cursor: grabbing; }
 
 .window-title {
-    color: #a0a0a8;
-    font-size: 12px;
+    color: #efeff4;
+    font-size: 13px;
+    font-weight: 500;
     flex-grow: 1;
     text-align: center;
-    margin-right: 40px; /* Offset the controls to center the text */
+    margin-right: 50px;
 }
 
-/* iOS Window Controls */
+/* iOS Traffic Light Controls */
 .window-controls {
     display: flex;
-    gap: 7px;
+    gap: 8px;
 }
 
 .control {
@@ -163,21 +163,35 @@ body, html {
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    transition: background 0.1s;
+    position: relative;
 }
 
-.control:focus { outline: none; }
+.control.red { background: #ff5f57; }
+.control.yellow { background: #ffbd2e; }
+.control.green { background: #28c840; }
 
-/* The traffic lights */
-.control.red { background: #ff5f56; border: 1px solid #e0443e; }
-.control.yellow { background: #ffbd2e; border: 1px solid #dea123; }
-.control.green { background: #27c93f; border: 1px solid #1aab29; }
+.control:hover::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 1px;
+    background: rgba(0,0,0,0.5);
+}
 
-.window-header:hover .control.red { background: #ff7c74; }
-
-/* The actual content area inside the window */
+/* Window Content Area */
 .window-content {
     flex-grow: 1;
     color: white;
-    overflow-y: auto; /* Scrollable content */
+    background: #1c1c1e;
+    overflow-y: auto;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
 }
