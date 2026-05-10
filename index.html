@@ -8,24 +8,32 @@
 </head>
 <body>
 
-    <div class="desktop" id="desktop">
-        <div class="app-grid left">
-            <div class="icon" onclick="openApp('https://www.roblox.com')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon.png" alt="Roblox">
-                <span>Roblox</span>
+    <div id="desktop-wrapper" class="desktop-wrapper">
+        
+        <div class="app-grid-container">
+            <div class="app-grid left">
+                <div class="icon" onclick="Desktop.openApp('settings')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3019/3019013.png" alt="Settings">
+                    <span>Settings</span>
+                </div>
+                <div class="icon" onclick="Desktop.openApp('files')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1001/1001021.png" alt="Files">
+                    <span>Files</span>
+                </div>
+                <div class="icon" onclick="Desktop.openApp('calc')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png" alt="Calculator">
+                    <span>Calc</span>
+                </div>
+                <div class="icon" onclick="Desktop.openApp('roblox')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon.png" alt="Roblox">
+                    <span>Roblox</span>
+                </div>
             </div>
-            <div class="icon" onclick="openApp('https://poki.com')">
-                <img src="https://img.utdstc.com/icon/871/943/87194360e206085a63901a0a501a396e95c1c8751513a96894565780f7d549f7:200" alt="Poki">
-                <span>Poki</span>
-            </div>
-            </div>
+        </div>
 
         <div class="taskbar">
             <div class="start-menu">
                 <img src="https://cdn-icons-png.flaticon.com/512/888/888879.png" width="20">
-            </div>
-            <div class="taskbar-apps">
-                <span class="active-tab">Main</span>
             </div>
             <div class="system-tray">
                 <span id="temp">29°C</span>
@@ -35,6 +43,21 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <template id="window-template">
+        <div class="window" style="width: 400px; height: 300px; top: 100px; left: 100px;">
+            <div class="window-header">
+                <div class="window-controls">
+                    <button class="control red" title="Close" onclick="Desktop.closeWindow(this)"></button>
+                    <button class="control yellow" title="Minimize" onclick="Desktop.minimizeWindow(this)"></button>
+                    <button class="control green" title="Maximize" onclick="Desktop.maximizeWindow(this)"></button>
+                </div>
+                <div class="window-title">App Title</div>
+            </div>
+            <div class="window-content">
+                </div>
+        </div>
+    </template>
+
+    <script src="desktop.js"></script>
 </body>
 </html>
