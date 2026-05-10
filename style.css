@@ -9,7 +9,7 @@ body, html {
 
 .desktop-wrapper {
     /* FIX: Correct background setup for non-zoomed, contained wallpaper */
-    background: url('https://i.pinimg.com/736x/72/83/54/728354ee9391c247f047202904c5d11d.jpg');
+    background: url('https://images3.alphacoders.com/789/789408.png');
     background-size: contain; /* The requested 'original size thingy' fix */
     background-repeat: no-repeat;
     background-position: center;
