@@ -11,11 +11,3 @@
 ## 📸 Preview
 The interface mimics a desktop environment with a glassy taskbar and a grid-based app layout, optimized for quick navigation.
 
-## 🛠️ How to Add Games
-To add more games to your desktop, open `index.html` and add a new icon div inside the `app-grid` section:
-
-```html
-<div class="icon" onclick="openApp('URL_TO_GAME')">
-    <img src="URL_TO_ICON" alt="Game Name">
-    <span>Game Name</span>
-</div>
