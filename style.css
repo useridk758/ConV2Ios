@@ -7,10 +7,23 @@ body, html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     user-select: none;
     background-color: #000; /* Backdrop for the wallpaper */
+
+    /* Custom Knife Cursor - Hotspot at 0,0 (the tip) */
+    cursor: url('knife.png') 0 0, auto;
+}
+
+/* Apply Dio to anything clickable */
+.icon, 
+.control, 
+.window-header, 
+button, 
+a, 
+.file {
+    cursor: url('dio.png') 16 16, pointer !important;
 }
 
 .desktop-wrapper {
-    /* Updated Wallpaper */
+    /* Updated Wallpaper - Centered and not zoomed */
     background-image: url('https://images3.alphacoders.com/789/789408.png');
     background-size: contain; 
     background-repeat: no-repeat;
@@ -46,7 +59,6 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: pointer;
     transition: transform 0.2s, background 0.2s;
     border-radius: 12px;
 }
@@ -110,7 +122,7 @@ body, html {
     display: flex;
     flex-direction: column;
     
-    /* Smooth Transitions */
+    /* Smooth Transitions for opening/closing */
     transition: transform 0.3s cubic-bezier(0.2, 1, 0.2, 1), 
                 opacity 0.2s ease, 
                 width 0.3s ease, 
@@ -125,7 +137,7 @@ body, html {
 .window.minimized { transform: translateY(100vh) scale(0.1); opacity: 0; }
 
 .window.dragging {
-    transition: none;
+    transition: none; /* No delay while moving */
     z-index: 999;
 }
 
@@ -133,14 +145,11 @@ body, html {
 .window-header {
     height: 32px;
     background: #252529;
-    cursor: grab;
     display: flex;
     align-items: center;
     padding: 0 12px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
-
-.window-header:active { cursor: grabbing; }
 
 .window-title {
     color: #efeff4;
@@ -162,24 +171,12 @@ body, html {
     height: 12px;
     border-radius: 50%;
     border: none;
-    cursor: pointer;
     position: relative;
 }
 
 .control.red { background: #ff5f57; }
 .control.yellow { background: #ffbd2e; }
 .control.green { background: #28c840; }
-
-.control:hover::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 6px;
-    height: 1px;
-    background: rgba(0,0,0,0.5);
-}
 
 /* Window Content Area */
 .window-content {
