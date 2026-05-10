@@ -2,7 +2,7 @@ const APP_MANIFEST = {
     'settings': { title: 'Settings', template: 'app_templates/settings.html', width: 450, height: 400 },
     'files':    { title: 'Files',    template: 'app_templates/files.html',    width: 600, height: 450 },
     'calc':     { title: 'Calculator', template: 'app_templates/calculator.html', width: 280, height: 400 },
-    'roblox':   { title: 'Roblox', type: 'frame', url: 'https://nowgg.lol/play/roblox-corporation/5349/roblox', width: 800, height: 600 }
+    'games':    { title: 'Games',    template: 'app_templates/games.html',    width: 500, height: 400 }
 };
 
 const Desktop = {
@@ -11,16 +11,11 @@ const Desktop = {
 
     init: function() {
         this.desktop = document.getElementById('desktop-wrapper');
-        
-        // Start Clock
         this.updateClock();
         setInterval(() => this.updateClock(), 1000);
         
-        // Global Listeners for Dragging
         document.addEventListener('mousemove', (e) => this.onMouseMove(e));
         document.addEventListener('mouseup', () => this.onMouseUp());
-        
-        console.log("Con iOS Initialized");
     },
 
     updateClock: function() {
@@ -32,7 +27,6 @@ const Desktop = {
         if(clockEl) clockEl.textContent = `${hrs}:${min} ${ampm}`;
     },
 
-    // --- Wallpaper Logic ---
     setWallpaper: function(url) {
         const wrapper = document.getElementById('desktop-wrapper');
         wrapper.style.opacity = "0.9";
@@ -42,12 +36,26 @@ const Desktop = {
         }, 200);
     },
 
-    // --- Window Management ---
+    // Logic to launch an iframe game from the Games app
+    launchGame: function(name, url) {
+        const gameId = name.replace(/\s+/g, '-').toLowerCase();
+        
+        // Setup a temporary manifest for the game instance
+        APP_MANIFEST[gameId] = { 
+            title: name, 
+            type: 'frame', 
+            url: url, 
+            width: 800, 
+            height: 600 
+        };
+        
+        this.openApp(gameId);
+    },
+
     openApp: async function(appId) {
         const manifest = APP_MANIFEST[appId];
         if (!manifest) return;
 
-        // Check if already open
         if (document.getElementById(`window-${appId}`)) {
             const existing = document.getElementById(`window-${appId}`);
             existing.style.zIndex = this.currentZIndex++;
@@ -65,29 +73,27 @@ const Desktop = {
         windowClone.style.width = manifest.width + 'px';
         windowClone.style.height = manifest.height + 'px';
         
-        // Centering the window
-        windowClone.style.top = "15%";
-        windowClone.style.left = "25%";
+        windowClone.style.top = "10%";
+        windowClone.style.left = "15%";
 
         windowClone.classList.add('opening');
         this.desktop.appendChild(windowClone);
 
-        // Header click to focus and drag
         const header = windowClone.querySelector('.window-header');
         header.onmousedown = (e) => this.onMouseDown(e, windowClone);
 
-        // Load Content
         if (manifest.type === 'frame') {
             const iframe = document.createElement('iframe');
             iframe.src = manifest.url;
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
             contentArea.appendChild(iframe);
         } else {
             try {
                 const response = await fetch(manifest.template);
                 const html = await response.text();
                 contentArea.innerHTML = html;
-                
-                // If the app is the calculator, we need to manually trigger its logic
                 if (appId === 'calc') this.initCalculator(contentArea);
             } catch (err) {
                 contentArea.innerHTML = `<div style="padding:20px">Error loading ${manifest.title}</div>`;
@@ -97,8 +103,8 @@ const Desktop = {
         setTimeout(() => windowClone.classList.remove('opening'), 10);
     },
 
-    // --- Drag Logic ---
     onMouseDown: function(e, windowEl) {
+        if (e.target.closest('.control')) return;
         windowEl.style.zIndex = this.currentZIndex++;
         this.activeDrag.window = windowEl;
         const rect = windowEl.getBoundingClientRect();
@@ -121,7 +127,6 @@ const Desktop = {
         }
     },
 
-    // --- Control Buttons ---
     closeWindow: function(btn) {
         const win = btn.closest('.window');
         win.classList.add('closing');
@@ -138,8 +143,6 @@ const Desktop = {
         if (win.style.width === "100vw") {
             win.style.width = "400px";
             win.style.height = "300px";
-            win.style.top = "100px";
-            win.style.left = "100px";
         } else {
             win.style.width = "100vw";
             win.style.height = "calc(100vh - 40px)";
@@ -148,22 +151,18 @@ const Desktop = {
         }
     },
 
-    // --- Calculator Logic Helper ---
     initCalculator: function(container) {
         const display = container.querySelector('#calc-display');
         container.querySelectorAll('.num').forEach(btn => {
             btn.onclick = () => {
-                if (display.innerText === '0' || display.innerText === 'Error') display.innerText = '';
+                if (display.innerText === '0') display.innerText = '';
                 display.innerText += btn.innerText;
             };
         });
         container.querySelector('.eq').onclick = () => {
             try {
-                // Using a basic Function constructor for math safety
-                display.innerText = Function('"use strict";return (' + display.innerText.replace('×', '*').replace('÷', '/') + ')')();
-            } catch {
-                display.innerText = 'Error';
-            }
+                display.innerText = eval(display.innerText.replace('×', '*').replace('÷', '/'));
+            } catch { display.innerText = 'Error'; }
         };
     }
 };
