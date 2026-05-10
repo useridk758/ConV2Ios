@@ -6,24 +6,25 @@ body, html {
     overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     user-select: none;
-    background-color: #000; /* Backdrop for the wallpaper */
+    background-color: #000;
 
-    /* Custom Knife Cursor - Hotspot at 0,0 (the tip) */
+    /* Custom Knife Cursor - Scaled and Hotspot set to the tip (0,0) */
     cursor: url('knife.png') 0 0, auto;
 }
 
-/* Apply Dio to anything clickable */
+/* Dio for anything clickable - Scaled and Hotspot centered (16,16) */
 .icon, 
 .control, 
 .window-header, 
 button, 
 a, 
-.file {
+.file,
+.start-menu {
     cursor: url('dio.png') 16 16, pointer !important;
 }
 
 .desktop-wrapper {
-    /* Updated Wallpaper - Centered and not zoomed */
+    /* Wallpaper: 789408.png - Centered and original aspect ratio */
     background-image: url('https://images3.alphacoders.com/789/789408.png');
     background-size: contain; 
     background-repeat: no-repeat;
@@ -93,8 +94,8 @@ a,
     bottom: 0;
     width: 100%;
     height: 40px;
-    background: rgba(25, 25, 30, 0.6);
-    backdrop-filter: blur(20px);
+    background: rgba(25, 25, 30, 0.7);
+    backdrop-filter: blur(25px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -122,7 +123,7 @@ a,
     display: flex;
     flex-direction: column;
     
-    /* Smooth Transitions for opening/closing */
+    /* Smooth Transitions */
     transition: transform 0.3s cubic-bezier(0.2, 1, 0.2, 1), 
                 opacity 0.2s ease, 
                 width 0.3s ease, 
@@ -137,7 +138,7 @@ a,
 .window.minimized { transform: translateY(100vh) scale(0.1); opacity: 0; }
 
 .window.dragging {
-    transition: none; /* No delay while moving */
+    transition: none; /* Instant feedback when moving */
     z-index: 999;
 }
 
@@ -172,7 +173,10 @@ a,
     border-radius: 50%;
     border: none;
     position: relative;
+    transition: filter 0.1s;
 }
+
+.control:active { filter: brightness(0.8); }
 
 .control.red { background: #ff5f57; }
 .control.yellow { background: #ffbd2e; }
