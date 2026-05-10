@@ -4,24 +4,41 @@ body, html {
     height: 100%;
     overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none; /* Prevents text highlighting while dragging */
 }
 
-.desktop {
+.desktop-wrapper {
+    /* FIX: Correct background setup for non-zoomed, contained wallpaper */
     background: url('https://i.pinimg.com/736x/72/83/54/728354ee9391c247f047202904c5d11d.jpg');
-    background-size: cover;
+    background-size: contain; /* The requested 'original size thingy' fix */
+    background-repeat: no-repeat;
     background-position: center;
+    background-color: #0d1117; /* Matches the dark void of the image */
+    
     height: 100vh;
     width: 100vw;
     position: relative;
+    overflow: hidden; /* Important: windows cannot escape the desktop */
+}
+
+/* Icons Grid */
+.app-grid-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 40px); /* Fill space above taskbar */
+    pointer-events: none; /* Let clicks pass through empty grid space */
 }
 
 .app-grid {
+    pointer-events: auto; /* Re-enable clicks for actual icons */
     display: grid;
     grid-template-columns: repeat(auto-fill, 80px);
     grid-template-rows: repeat(auto-fill, 90px);
     gap: 20px;
     padding: 20px;
-    width: 300px;
+    width: 250px;
 }
 
 .icon {
@@ -29,13 +46,13 @@ body, html {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, background 0.2s;
+    border-radius: 12px;
 }
 
 .icon:hover {
     transform: scale(1.1);
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .icon img {
@@ -43,13 +60,18 @@ body, html {
     height: 50px;
     border-radius: 10px;
     margin-bottom: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
 .icon span {
     color: white;
-    font-size: 12px;
-    text-shadow: 1px 1px 3px black;
+    font-size: 11px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
     text-align: center;
+    width: 75px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Taskbar Style */
@@ -58,14 +80,15 @@ body, html {
     bottom: 0;
     width: 100%;
     height: 40px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    background: rgba(25, 25, 30, 0.5);
+    backdrop-filter: blur(15px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
     box-sizing: border-box;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 1000; /* Taskbar is always on top */
 }
 
 .system-tray {
@@ -73,4 +96,88 @@ body, html {
     font-size: 13px;
     display: flex;
     gap: 15px;
+}
+
+/* !!! Dynamic Windows & Transitions !!! */
+
+.window {
+    position: absolute;
+    background: rgba(30, 32, 40, 0.95);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    
+    /* Smooth Transitions for opening/minimizing/moving */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.2s ease, 
+                width 0.2s ease, 
+                height 0.2s ease;
+    
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Minimize/Open states for smooth scaling */
+.window.opening { transform: scale(0.5); opacity: 0; }
+.window.closing { transform: scale(0.9); opacity: 0; }
+.window.minimized { transform: scale(0.1); opacity: 0; }
+
+.window.dragging {
+    transition: none; /* Disable transitions when actively dragging */
+    z-index: 999;
+}
+
+/* Window Header (The Draggable Part) */
+.window-header {
+    height: 28px;
+    background: #1a1c22;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.window-header:active { cursor: grabbing; }
+
+.window-title {
+    color: #a0a0a8;
+    font-size: 12px;
+    flex-grow: 1;
+    text-align: center;
+    margin-right: 40px; /* Offset the controls to center the text */
+}
+
+/* iOS Window Controls */
+.window-controls {
+    display: flex;
+    gap: 7px;
+}
+
+.control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.control:focus { outline: none; }
+
+/* The traffic lights */
+.control.red { background: #ff5f56; border: 1px solid #e0443e; }
+.control.yellow { background: #ffbd2e; border: 1px solid #dea123; }
+.control.green { background: #27c93f; border: 1px solid #1aab29; }
+
+.window-header:hover .control.red { background: #ff7c74; }
+
+/* The actual content area inside the window */
+.window-content {
+    flex-grow: 1;
+    color: white;
+    overflow-y: auto; /* Scrollable content */
 }
