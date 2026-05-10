@@ -8,23 +8,24 @@ body, html {
     user-select: none;
     background-color: #000;
 
-    /* Custom Knife Cursor - Scaled and Hotspot set to the tip (0,0) */
-    cursor: url('knife.png') 0 0, auto;
+    /* Custom Knife Cursor from your assets folder [cite: 1] */
+    cursor: url('assets/knife.png') 0 0, auto;
 }
 
-/* Dio for anything clickable - Scaled and Hotspot centered (16,16) */
+/* Dio pointer for all interactive elements [cite: 1] */
 .icon, 
 .control, 
 .window-header, 
 button, 
 a, 
 .file,
+.wp-option,
 .start-menu {
-    cursor: url('dio.png') 16 16, pointer !important;
+    cursor: url('assets/dio.png') 16 16, pointer !important;
 }
 
 .desktop-wrapper {
-    /* Wallpaper: 789408.png - Centered and original aspect ratio */
+    /* Default Wallpaper [cite: 1] */
     background-image: url('https://images3.alphacoders.com/789/789408.png');
     background-size: contain; 
     background-repeat: no-repeat;
@@ -34,6 +35,9 @@ a,
     width: 100vw;
     position: relative;
     overflow: hidden;
+    
+    /* Smooth transition for wallpaper changes */
+    transition: background-image 0.5s ease-in-out, opacity 0.3s ease;
 }
 
 /* Icons Grid Layout */
@@ -123,7 +127,6 @@ a,
     display: flex;
     flex-direction: column;
     
-    /* Smooth Transitions */
     transition: transform 0.3s cubic-bezier(0.2, 1, 0.2, 1), 
                 opacity 0.2s ease, 
                 width 0.3s ease, 
@@ -138,7 +141,7 @@ a,
 .window.minimized { transform: translateY(100vh) scale(0.1); opacity: 0; }
 
 .window.dragging {
-    transition: none; /* Instant feedback when moving */
+    transition: none;
     z-index: 999;
 }
 
@@ -175,8 +178,6 @@ a,
     position: relative;
     transition: filter 0.1s;
 }
-
-.control:active { filter: brightness(0.8); }
 
 .control.red { background: #ff5f57; }
 .control.yellow { background: #ffbd2e; }
