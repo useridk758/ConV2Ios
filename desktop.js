@@ -36,11 +36,9 @@ const Desktop = {
         }, 200);
     },
 
-    // Logic to launch an iframe game from the Games app
     launchGame: function(name, url) {
         const gameId = name.replace(/\s+/g, '-').toLowerCase();
         
-        // Setup a temporary manifest for the game instance
         APP_MANIFEST[gameId] = { 
             title: name, 
             type: 'frame', 
