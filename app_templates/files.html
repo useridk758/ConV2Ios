@@ -1,0 +1,22 @@
+<style>
+    #files-view { display: grid; grid-template-columns: 150px 1fr; height: 100%;}
+    .sidebar { background: #1a1c22; border-right: 1px solid #333; padding: 10px;}
+    .sidebar div { color: #a0a0a8; padding: 5px; font-size: 13px; cursor: pointer;}
+    .sidebar div:hover { background: #000; color: white; }
+    .sidebar div.active { color: #ffbd2e; font-weight: bold; }
+    .main-view { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, 70px); gap: 15px; align-content: start;}
+    .file { text-align: center; color: #eee; font-size: 11px; cursor: pointer;}
+    .file img { width: 40px; height: 40px; margin-bottom: 4px; }
+</style>
+<div id="files-view">
+    <div class="sidebar">
+        <div class="active">🏠 Quick Access</div>
+        <div>📂 Desktop</div>
+        <div>Documents</div>
+        <div>Downloads</div>
+    </div>
+    <div class="main-view">
+        <div class="file"><img src="https://cdn-icons-png.flaticon.com/512/1001/1001021.png"><div>game_save.sav</div></div>
+        <div class="file"><img src="https://cdn-icons-png.flaticon.com/512/1001/1001021.png"><div>notes.txt</div></div>
+    </div>
+</div>
