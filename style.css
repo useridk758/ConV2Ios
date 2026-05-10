@@ -1,0 +1,76 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.desktop {
+    background: url('https://i.pinimg.com/736x/72/83/54/728354ee9391c247f047202904c5d11d.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 80px);
+    grid-template-rows: repeat(auto-fill, 90px);
+    gap: 20px;
+    padding: 20px;
+    width: 300px;
+}
+
+.icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.icon img {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.icon span {
+    color: white;
+    font-size: 12px;
+    text-shadow: 1px 1px 3px black;
+    text-align: center;
+}
+
+/* Taskbar Style */
+.taskbar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.system-tray {
+    color: white;
+    font-size: 13px;
+    display: flex;
+    gap: 15px;
+}
