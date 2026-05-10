@@ -1,0 +1,23 @@
+<style>
+    #calc-view { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 10px; height: 100%;}
+    #calc-display { grid-column: span 4; background: #000; color: lime; text-align: right; padding: 10px; font-size: 24px; border-radius: 5px; min-height: 35px;}
+    button.c-btn { padding: 15px; border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 16px;}
+    button.c-btn:hover { opacity: 0.8; }
+    button.op { background: #ffbd2e; color: black; }
+    button.num { background: #333; }
+    button.eq { background: #27c93f; color: black; }
+</style>
+<div id="calc-view">
+    <div id="calc-display">0</div>
+    <button class="c-btn op" onclick="document.getElementById('calc-display').textContent = '0'">C</button>
+    <button class="c-btn num">?</button><button class="c-btn num">?</button><button class="c-btn op">÷</button>
+    <button class="c-btn num" onclick="addNum('7')">7</button><button class="c-btn num" onclick="addNum('8')">8</button><button class="c-btn num" onclick="addNum('9')">9</button><button class="c-btn op">×</button>
+    <button class="c-btn num" onclick="addNum('4')">4</button><button class="c-btn num" onclick="addNum('5')">5</button><button class="c-btn num" onclick="addNum('6')">6</button><button class="c-btn op">−</button>
+    <button class="c-btn num" onclick="addNum('1')">1</button><button class="c-btn num" onclick="addNum('2')">2</button><button class="c-btn num" onclick="addNum('3')">3</button><button class="c-btn op">+</button>
+    <button class="c-btn num" onclick="addNum('0')" style="grid-column: span 2;">0</button><button class="c-btn num">.</button><button class="c-btn eq" onclick="calcResult()">=</button>
+</div>
+<script>
+    function addNum(n) { const disp = document.getElementById('calc-display'); if (disp.textContent === '0') disp.textContent = ''; disp.textContent += n; }
+    // Calculation requires state management, keeping it simple for view logic
+    function calcResult() { document.getElementById('calc-display').textContent = 'Result!'; }
+</script>
